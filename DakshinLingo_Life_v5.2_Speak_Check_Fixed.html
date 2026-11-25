@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#4656c8">
+<meta name="description" content="Learn Telugu, Tamil, Kannada and Malayalam with lessons, speaking practice, tracing and quizzes.">
+<title>DakshinLingo Life v5.2 - Production Polish</title>
+<style>
+  :root {
+    --c-topics: #4f46e5;
+    --c-tutor: #059669;
+    --c-script: #d97706;
+    --c-quiz: #e11d48;
+    --theme: #4f46e5;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 82px;
+    line-height: 1.4;
+  }
+  header {
+    background: var(--theme);
+    color: #fff;
+    padding: 12px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+    transition: background 0.3s ease;
+  }
+  .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .brand { font-size: 1.15rem; font-weight: 800; }
+  .brand span { color: #fef08a; }
+  .stats { display: flex; gap: 6px; }
+  .pill { background: rgba(255,255,255,0.22); padding: 4px 9px; border-radius: 20px; font-size: 0.76rem; font-weight: 800; }
+
+  .dash-bar { background: rgba(0,0,0,0.18); border-radius: 12px; padding: 7px 10px; margin-bottom: 10px; }
+  .dash-meta { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; margin-bottom: 4px; opacity: 0.95; }
+  .prog-track { background: rgba(255,255,255,0.25); height: 7px; border-radius: 6px; overflow: hidden; }
+  .prog-fill { background: #fef08a; height: 100%; width: 0%; transition: width 0.35s ease; border-radius: 6px; }
+
+  .lang-picker {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;
+    background: rgba(255,255,255,0.16); padding: 7px; border-radius: 14px;
+  }
+  .lp-col label { display: block; font-size: 0.64rem; text-transform: uppercase; opacity: 0.9; margin-bottom: 2px; font-weight: 700; }
+  .lp-sel {
+    width: 100%; padding: 6px 8px; border-radius: 8px; border: none;
+    font-weight: 700; font-size: 0.82rem; color: #1e293b; background: #fff;
+  }
+  .swap-btn {
+    background: #fff; color: var(--theme); border: none; width: 30px; height: 30px;
+    border-radius: 50%; font-size: 0.95rem; font-weight: 800; cursor: pointer; margin-top: 12px;
+  }
+
+  main { padding: 14px; max-width: 600px; margin: 0 auto; }
+  .view { display: none; animation: fadeUp 0.22s ease; }
+  .view.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .topic-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+  .topic-card {
+    border-radius: 16px; padding: 13px 12px; color: #fff; cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.15s;
+  }
+  .topic-card:active { transform: scale(0.96); }
+  .topic-card.selected { outline: 3px solid #0f172a; outline-offset: 2px; }
+  .t-icon { font-size: 1.5rem; margin-bottom: 3px; display: block; }
+  .t-name { font-size: 0.94rem; font-weight: 800; }
+  .t-sub { font-size: 0.72rem; opacity: 0.9; }
+
+  .card {
+    background: var(--card); border-radius: 16px; padding: 14px; margin-bottom: 12px;
+    border: 1px solid var(--border); box-shadow: 0 2px 6px rgba(15,23,42,0.04);
+  }
+  .card.done { border-left: 5px solid #10b981; background: #f0fdf4; }
+  .known-line { font-size: 0.92rem; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+  .target-line { font-size: 1.24rem; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+  .pron-line { font-size: 0.88rem; color: var(--theme); font-weight: 700; }
+  .tip-box {
+    background: #f8fafc; border-left: 3px solid var(--theme); padding: 6px 10px;
+    font-size: 0.78rem; color: #475569; margin-top: 8px; border-radius: 0 8px 8px 0;
+  }
+  .btn-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    border: none; border-radius: 10px; padding: 8px 11px; font-size: 0.8rem;
+    font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .btn-pri { background: var(--theme); color: #fff; }
+  .btn-soft { background: #e2e8f0; color: #1e293b; }
+  .btn-mic { background: #ffe4e6; color: #e11d48; }
+  .btn-mic.listening { background: #e11d48; color: #fff; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+  .btn-done { background: #f1f5f9; color: var(--text); margin-left: auto; }
+  .btn-done.active { background: #10b981; color: #fff; }
+  .mic-res { font-size: 0.8rem; margin-top: 8px; font-weight: 700; min-height: 18px; }
+
+  .mode-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .mode-btn {
+    padding: 9px; border-radius: 12px; border: 1.5px solid #a7f3d0; background: #fff;
+    color: #065f46; font-weight: 800; font-size: 0.84rem; cursor: pointer;
+  }
+  .mode-btn.active { background: #059669; color: #fff; border-color: #059669; }
+  .q-mode-btn {
+    padding: 9px; border-radius: 12px; border: 1.5px solid #fecdd3; background: #fff;
+    color: #9f1239; font-weight: 800; font-size: 0.84rem; cursor: pointer;
+  }
+  .q-mode-btn.active { background: #e11d48; color: #fff; border-color: #e11d48; }
+
+  .chip-bar { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; padding-bottom: 4px; scrollbar-width: none; }
+  .chip {
+    background: #fff; border: 1.5px solid var(--border); padding: 6px 12px; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 700; color: var(--muted); white-space: nowrap; cursor: pointer;
+  }
+  .chip.active { background: var(--theme); color: #fff; border-color: var(--theme); }
+
+  .tutor-card {
+    background: #fff; border-radius: 18px; padding: 16px; border: 1.5px solid #a7f3d0;
+    box-shadow: 0 6px 16px rgba(5,150,105,0.08);
+  }
+  .ai-badge {
+    display: inline-block; background: #d1fae5; color: #065f46; font-size: 0.72rem;
+    font-weight: 800; padding: 4px 10px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .ai-explain { font-size: 0.88rem; color: #334155; margin-bottom: 12px; background: #f0fdf4; padding: 10px; border-radius: 12px; }
+  .ai-big { font-size: 1.32rem; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
+  .ai-big.alpha-big { font-size: 3.2rem; color: #be123c; margin: 8px 0; }
+  .ai-pron { font-size: 0.92rem; color: #059669; font-weight: 700; margin-bottom: 12px; }
+  .ai-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+
+  .rp-step-bar { display: flex; gap: 5px; margin-bottom: 10px; }
+  .rp-dot { flex: 1; height: 6px; border-radius: 4px; background: #e2e8f0; }
+  .rp-dot.done { background: #10b981; }
+  .rp-dot.now { background: #059669; }
+  .chat-box {
+    background: #f8fafc; border-radius: 14px; border: 1px solid var(--border); padding: 12px;
+    min-height: 200px; max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; margin-bottom: 10px;
+  }
+  .msg { max-width: 88%; padding: 9px 12px; border-radius: 13px; font-size: 0.88rem; }
+  .msg.bot { background: #ecfdf5; border: 1px solid #a7f3d0; color: #0f172a; align-self: flex-start; border-bottom-left-radius: 3px; }
+  .msg.user { background: #059669; color: #fff; align-self: flex-end; border-bottom-right-radius: 3px; }
+  .msg-sub { font-size: 0.75rem; opacity: 0.85; display: block; margin-top: 2px; }
+  .rp-opts { display: flex; flex-direction: column; gap: 8px; }
+  .rp-opt-btn {
+    background: #fff; border: 1.5px solid #059669; color: #065f46; padding: 10px 12px;
+    border-radius: 12px; text-align: left; font-weight: 700; font-size: 0.86rem; cursor: pointer;
+  }
+  .rp-opt-btn small { display: block; font-weight: 500; color: var(--muted); margin-top: 2px; }
+
+  .trick-panel {
+    background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 16px;
+    padding: 13px; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(217,119,6,0.08);
+  }
+  .tp-top { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .tp-big { font-size: 2.2rem; font-weight: 800; color: #b45309; background: #fef3c7; padding: 4px 14px; border-radius: 12px; }
+  .tp-info { font-size: 0.88rem; font-weight: 700; color: #0f172a; }
+  .tp-trick { font-size: 0.82rem; color: #78350f; background: #fff; padding: 8px 10px; border-radius: 10px; border-left: 3px solid #d97706; }
+
+  /* Interactive Drawing / Tracing Pad */
+  .pad-box {
+    background: #fff; border: 2px solid #fcd34d; border-radius: 16px;
+    padding: 12px; margin-bottom: 12px; text-align: center;
+  }
+  .pad-title { font-size: 0.82rem; font-weight: 800; color: #92400e; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .canvas-wrap {
+    position: relative; width: 100%; height: 190px; background: #fffef7;
+    border: 2px dashed #f59e0b; border-radius: 14px; overflow: hidden; touch-action: none;
+  }
+  .ghost-letter {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 7.5rem; font-weight: 800; color: rgba(217,119,6,0.16);
+    pointer-events: none; user-select: none;
+  }
+  #traceCanvas { position: relative; z-index: 2; width: 100%; height: 100%; cursor: crosshair; }
+  .pad-controls { display: flex; gap: 8px; margin-top: 10px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .color-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #cbd5e1; cursor: pointer; }
+  .color-dot.active { box-shadow: 0 0 0 2.5px #0f172a; transform: scale(1.1); }
+
+  .script-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .alpha-card {
+    background: #fff; border: 1.5px solid #fde68a; border-radius: 13px;
+    padding: 10px 4px; text-align: center; cursor: pointer;
+  }
+  .alpha-card:active, .alpha-card.picked { background: #fef3c7; border-color: #d97706; transform: scale(0.96); }
+  .a-target { font-size: 1.55rem; font-weight: 800; color: #b45309; }
+  .a-known { font-size: 0.92rem; font-weight: 700; color: #0f172a; }
+  .a-sound { font-size: 0.7rem; color: var(--muted); font-weight: 700; }
+
+  .cmp-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; border: 1px solid #fde68a; }
+  .cmp-table th { background: #fef3c7; color: #92400e; font-size: 0.76rem; padding: 8px 4px; }
+  .cmp-table td { text-align: center; padding: 8px 4px; border-top: 1px solid #fef3c7; font-size: 1.15rem; font-weight: 800; }
+  .cmp-table td.snd { font-size: 0.75rem; color: var(--muted); }
+
+  .quiz-card { background: #fff; border-radius: 18px; padding: 18px; border: 1.5px solid #fecdd3; text-align: center; }
+  .opt-grid { display: grid; gap: 9px; margin-top: 12px; }
+  .opt-grid.alpha-grid { grid-template-columns: 1fr 1fr; }
+  .opt-btn {
+    background: #f8fafc; border: 1.5px solid var(--border); padding: 12px;
+    border-radius: 12px; font-size: 0.92rem; font-weight: 700; cursor: pointer; text-align: left;
+  }
+  .opt-grid.alpha-grid .opt-btn { text-align: center; font-size: 1.25rem; padding: 14px 8px; }
+  .opt-btn.correct { background: #dcfce7; border-color: #10b981; color: #166534; }
+  .opt-btn.wrong { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+  .quiz-trick {
+    margin-top: 10px; font-size: 0.8rem; color: #78350f; background: #fffbeb;
+    padding: 8px 10px; border-radius: 10px; border-left: 3px solid #d97706; text-align: left; display: none;
+  }
+
+  #toast {
+    position: fixed; top: 68px; left: 50%; transform: translateX(-50%);
+    background: #0f172a; color: #fef08a; padding: 8px 16px; border-radius: 24px;
+    font-size: 0.84rem; font-weight: 800; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  #toast.show { opacity: 1; }
+
+  nav {
+    position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+    border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 8px 6px 10px; z-index: 100; gap: 6px;
+  }
+  .nav-item {
+    border: none; border-radius: 12px; padding: 6px 2px; background: #f8fafc;
+    color: var(--muted); font-size: 0.72rem; font-weight: 800;
+    display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer;
+  }
+  .nav-item span { font-size: 1.25rem; }
+  .nav-item[data-tab="topics"].active { background: #eef2ff; color: var(--c-topics); }
+  .nav-item[data-tab="tutor"].active { background: #ecfdf5; color: var(--c-tutor); }
+  .nav-item[data-tab="script"].active { background: #fffbeb; color: var(--c-script); }
+  .nav-item[data-tab="quiz"].active { background: #fff1f2; color: var(--c-quiz); }
+
+/* v5.2 clean UI layer */
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--border:#e7ebf2;
+  --theme:#4656c8;--c-topics:#4656c8;--c-tutor:#13856d;--c-script:#bd821b;--c-quiz:#cf4964;
+}
+body{background:var(--bg);color:var(--text);line-height:1.5;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+header{padding:14px 16px 16px;box-shadow:0 2px 12px rgba(16,24,40,.08)}
+.top-row{margin-bottom:12px}.brand{font-size:1.08rem;letter-spacing:-.025em}
+.brand span{color:#e8eaff}.stats{gap:7px}.pill{background:rgba(255,255,255,.16);padding:5px 10px;font-size:.72rem}
+.dash-bar{padding:9px 11px;margin-bottom:11px;background:rgba(0,0,0,.13)}
+.lang-picker{background:rgba(255,255,255,.13);padding:8px;border:1px solid rgba(255,255,255,.12)}
+.lp-sel{padding:9px 8px;border-radius:9px;font-size:.78rem;outline:none}
+.swap-btn{width:34px;height:34px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+main{padding:16px 14px;max-width:680px}
+.view.active{animation:fadeUp .18s ease}
+.topic-grid{gap:10px;margin-bottom:16px}
+.topic-card{border-radius:14px;padding:13px;box-shadow:none;min-height:94px}
+.topic-card.selected{outline:2px solid var(--text);outline-offset:2px}
+.t-icon{font-size:1.35rem}.t-name{font-size:.9rem}.t-sub{font-size:.7rem}
+.card,.tutor-card,.quiz-card,.pad-box,.trick-panel{border-radius:14px;box-shadow:0 1px 4px rgba(16,24,40,.045);margin-bottom:12px}
+.card{padding:15px;border:1px solid var(--border)}
+.card.done{border-left:3px solid #16a37a;background:#f5fbf8}
+.known-line{font-size:.82rem}.target-line{font-size:1.2rem;line-height:1.45}
+.pron-line{font-size:.83rem}.tip-box{background:#f7f8fc;border-left-width:2px}
+.btn{border-radius:9px;padding:9px 11px;font-size:.77rem}
+.btn-pri{background:var(--theme)}.btn-soft{background:#f0f2f7;color:#344054}
+.btn-mic{background:#fff0f2;color:#c23e58}
+.btn-done{margin-left:0}.btn-row{gap:7px}
+.mode-tabs{gap:8px}.mode-btn,.q-mode-btn{border-radius:10px;padding:10px;font-size:.8rem}
+.chip-bar{gap:7px}.chip{border-radius:9px;padding:7px 11px;font-size:.76rem}
+.tutor-card{padding:15px;border:1px solid var(--border);box-shadow:none}
+.ai-badge{font-size:.68rem;letter-spacing:.03em}
+.ai-explain{border-radius:10px;font-size:.83rem}
+.ai-big{font-size:1.25rem}.ai-pron{font-size:.85rem}
+.chat-box{border-radius:11px;min-height:180px}
+.msg{font-size:.83rem}.rp-opt-btn{border-radius:10px;padding:11px}
+.trick-panel{background:#fffaf0;border:1px solid #f1dfb8;box-shadow:none}
+.tp-big{font-size:2rem;border-radius:10px}
+.pad-box{border:1px solid #eadfca;padding:13px}
+.canvas-wrap{border:1.5px dashed #d9b56e;border-radius:11px;background:#fffdf8}
+.ghost-letter{font-size:7rem;color:rgba(180,130,45,.14)}
+.color-dot{width:22px;height:22px}
+.script-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.alpha-card{border:1px solid #eee4d1;border-radius:11px;padding:10px 3px;box-shadow:none}
+.alpha-card.picked{background:#fff8e9;border-color:#c38a2e}
+.a-target{font-size:1.5rem;color:#9b6a17}.a-known{font-size:.85rem}
+.quiz-card{padding:17px;border:1px solid #f0dce1;box-shadow:none}
+.opt-btn{border-radius:10px;padding:11px;font-size:.86rem}
+nav{padding:8px 8px max(10px,env(safe-area-inset-bottom));box-shadow:0 -3px 16px rgba(16,24,40,.05);border-top:1px solid var(--border);gap:7px}
+.nav-item{border-radius:10px;background:transparent;font-size:.69rem;padding:7px 2px}
+.nav-item span{font-size:1.15rem}
+#toast{top:76px;background:#172033;color:#fff;font-size:.8rem;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+button,select{font-family:inherit} button{touch-action:manipulation} .topic-card:focus-visible,.alpha-card:focus-visible,.msg:focus-visible{outline:3px solid rgba(70,86,200,.35);outline-offset:3px}button:focus-visible,select:focus-visible{outline:3px solid rgba(70,86,200,.3);outline-offset:2px}
+@media(min-width:560px){main{padding:20px 18px}.topic-grid{gap:12px}.card{padding:17px}}
+@media(max-width:370px){.brand{font-size:.98rem}.stats{gap:4px}.pill{font-size:.66rem;padding:4px 7px}.lp-sel{font-size:.72rem}.btn{padding:8px 9px}.script-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+
+  .card .mic-res[aria-live], #quizMsg[aria-live]{font-weight:700}
+  .canvas-wrap{user-select:none;-webkit-user-select:none}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div id="toast">+10 XP! 🎉</div>
+
+<header>
+  <div class="top-row">
+    <div class="brand">Dakshin<span>Lingo Life</span></div>
+    <div class="stats">
+      <div class="pill">🔥 <span id="streakVal">1</span> Day</div>
+      <div class="pill">⚡ <span id="xpVal">0</span> XP</div>
+    </div>
+  </div>
+  <div class="dash-bar">
+    <div class="dash-meta">
+      <span>🎯 Daily Goal: <span id="dailyXpTxt">0</span> / 50 XP</span>
+      <span id="coursePctTxt">Course: 0%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="dailyProgFill"></div></div>
+  </div>
+  <div class="lang-picker">
+    <div class="lp-col">
+      <label>Naa Bhasha (Known)</label>
+      <select id="knownSel" class="lp-sel" onchange="onLangChange('known')">
+        <option value="te" selected>తెలుగు (Telugu)</option>
+        <option value="ta">தமிழ் (Tamil)</option>
+        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+        <option value="ml">മലയാളം (Malayalam)</option>
+      </select>
+    </div>
+    <button class="swap-btn" onclick="swapLangs()">⇄</button>
+    <div class="lp-col">
+      <label>Nerchukovali (Learn)</label>
+      <select id="targetSel" class="lp-sel" onchange="onLangChange('target')">
+        <option value="te">తెలుగు (Telugu)</option>
+        <option value="ta">தமிழ் (Tamil)</option>
+        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+        <option value="ml" selected>മലയാളം (Malayalam)</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- 1. GOAL TOPICS -->
+  <section id="view-topics" class="view active">
+    <div class="topic-grid" id="topicGrid"></div>
+    <div id="lessonList"></div>
+  </section>
+
+  <!-- 2. GUIDED TUTOR + 5-STEP ROLEPLAY -->
+  <section id="view-tutor" class="view">
+    <div class="mode-tabs">
+      <button class="mode-btn active" id="btnModeRp" onclick="setTutorMode('roleplay')">🎭 5-Step Practice</button>
+      <button class="mode-btn" id="btnModeGuide" onclick="setTutorMode('guided')">📖 Guided Explain</button>
+    </div>
+    <div class="chip-bar" id="tutorChips"></div>
+    <div class="tutor-card" id="tutorCard"></div>
+  </section>
+
+  <!-- 3. FULL AKSHARAMALA + TRACING PAD -->
+  <section id="view-script" class="view">
+    <div class="chip-bar" id="alphaChips">
+      <button class="chip active" onclick="setAlpha('vowels', this)">Achulu (Vowels)</button>
+      <button class="chip" onclick="setAlpha('cons', this)">Hallulu (Consonants)</button>
+      <button class="chip" onclick="setAlpha('compare', this)">📊 Compare All 4</button>
+    </div>
+
+    <div class="trick-panel" id="trickPanel">
+      <div style="font-size:0.84rem;color:#78350f;font-weight:700;">👆 Kindha ye aksharam meeda tap chesina, audio vinipisthundi + <strong>Tracing Pad</strong> lo finger tho rasi practice cheyochu!</div>
+    </div>
+
+    <!-- DRAWING / TRACING PAD -->
+    <div class="pad-box" id="padBox">
+      <div class="pad-title">
+        <span>✍️ Finger Tracing Pad</span>
+        <span id="padLetterLabel" style="color:#d97706;">Select a letter below</span>
+      </div>
+      <div class="canvas-wrap">
+        <div class="ghost-letter" id="ghostLetter">അ</div>
+        <canvas id="traceCanvas"></canvas>
+      </div>
+      <div class="pad-controls">
+        <div class="color-dot active" role="button" aria-label="Brown pen" tabindex="0" style="background:#b45309;" onclick="setPenColor('#b45309', this)"></div>
+        <div class="color-dot" role="button" aria-label="Blue pen" tabindex="0" style="background:#2563eb;" onclick="setPenColor('#2563eb', this)"></div>
+        <div class="color-dot" role="button" aria-label="Green pen" tabindex="0" style="background:#059669;" onclick="setPenColor('#059669', this)"></div>
+        <div class="color-dot" role="button" aria-label="Red pen" tabindex="0" style="background:#e11d48;" onclick="setPenColor('#e11d48', this)"></div>
+        <button class="btn btn-soft" onclick="clearPad()">🧹 Clear</button>
+        <button class="btn btn-pri" style="background:#d97706;" onclick="finishTrace()">✅ Done +5 XP</button>
+      </div>
+    </div>
+
+    <div id="scriptContainer"></div>
+  </section>
+
+  <!-- 4. QUIZ (SENTENCE + ALPHABET) -->
+  <section id="view-quiz" class="view">
+    <div class="mode-tabs">
+      <button class="q-mode-btn active" id="btnQSent" onclick="setQuizMode('sentence')">💬 Sentence Quiz</button>
+      <button class="q-mode-btn" id="btnQAlpha" onclick="setQuizMode('alpha')">🔤 Alphabet Quiz</button>
+    </div>
+    <div class="quiz-card">
+      <div id="quizBadge" style="font-size:0.78rem; color:#e11d48; font-weight:800;">SENTENCE QUIZ (+15 XP)</div>
+      <div class="ai-big" id="quizTarget" style="margin-top:10px;">...</div>
+      <div class="ai-pron" id="quizPron" style="color:#e11d48;">...</div>
+      <button class="btn btn-pri" style="background:#e11d48;" onclick="speakQuiz()">🔊 Vinu (Listen)</button>
+      <div class="opt-grid" id="quizOpts"></div>
+      <div id="quizMsg" style="margin-top:12px; font-weight:800; min-height:22px;"></div>
+      <div id="quizTrick" class="quiz-trick"></div>
+      <button class="btn btn-soft" style="margin-top:10px; width:100%; justify-content:center;" onclick="nextQuiz()">Next Question ➡️</button>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button class="nav-item active" data-tab="topics" onclick="switchTab('topics', '#4f46e5', this)"><span>🌈</span>Topics</button>
+  <button class="nav-item" data-tab="tutor" onclick="switchTab('tutor', '#059669', this)"><span>🤖</span>Tutor</button>
+  <button class="nav-item" data-tab="script" onclick="switchTab('script', '#d97706', this)"><span>🔤</span>Aksharamala</button>
+  <button class="nav-item" data-tab="quiz" onclick="switchTab('quiz', '#e11d48', this)"><span>🎯</span>Quiz</button>
+</nav>
+
+<script>
+const LANGS = {
+  te: { name:'Telugu', code:'te-IN' },
+  ta: { name:'Tamil', code:'ta-IN' },
+  kn: { name:'Kannada', code:'kn-IN' },
+  ml: { name:'Malayalam', code:'ml-IN' }
+};
+
+const TOPICS = [
+  { id:'vidya', icon:'🎓', name:'Vidya', sub:'Education / Study', bg:'linear-gradient(135deg,#2563eb,#1d4ed8)' },
+  { id:'udyogam', icon:'💼', name:'Udyogam', sub:'Job & Office', bg:'linear-gradient(135deg,#7c3aed,#5b21b6)' },
+  { id:'vyaparam', icon:'🏪', name:'Vyaparam', sub:'Business & Shop', bg:'linear-gradient(135deg,#ea580c,#c2410c)' },
+  { id:'prayanam', icon:'🚌', name:'Prayanam', sub:'Travel & Routes', bg:'linear-gradient(135deg,#0d9488,#0f766e)' },
+  { id:'daily', icon:'🏠', name:'Daily Life', sub:'Casual Talk', bg:'linear-gradient(135deg,#db2777,#be185d)' }
+];
+
+const DATA = [
+  { id:'v1', topic:'vidya', tip:'Class lo teacher ni doubt adagadaniki.',
+    te:{ t:'నాకు ఒక సందేహం ఉంది', r:'Naaku oka sandeham undi' },
+    ta:{ t:'எனக்கு ஒரு சந்தேகம் உள்ளது', r:'Enakku oru sandhegam ullathu' },
+    kn:{ t:'ನನಗೆ ಒಂದು ಅನುಮಾನ ಇದೆ', r:'Nanage ondu anumaana ide' },
+    ml:{ t:'എനിക്ക് ഒരു സംശയമുണ്ട്', r:'Enikku oru samshayamundu' } },
+  { id:'v2', topic:'vidya', tip:'Artham kakapothe malli cheppamani adagadaniki.',
+    te:{ t:'దయచేసి మళ్ళీ చెప్పండి', r:'Dayachesi malli cheppandi' },
+    ta:{ t:'தயவுசெய்து மீண்டும் சொல்லுங்கள்', r:'Thayavuseythu meendum sollungal' },
+    kn:{ t:'ದಯವಿಟ್ಟು ಮತ್ತೆ ಹೇಳಿ', r:'Dayavittu matte heli' },
+    ml:{ t:'ദയവായി വീണ്ടും പറയൂ', r:'Dayavaayi veendum parayoo' } },
+  { id:'v3', topic:'vidya', tip:'Pusthakam leda notes adagadaniki.',
+    te:{ t:'ఈ పుస్తకం నాకు కావాలి', r:'Ee pusthakam naaku kavali' },
+    ta:{ t:'இந்தப் புத்தகம் எனக்கு வேண்டும்', r:'Indha puthagam enakku vendum' },
+    kn:{ t:'ಈ ಪುಸ್ತಕ ನನಗೆ ಬೇಕು', r:'Ee pustaka nanage beku' },
+    ml:{ t:'ഈ പുസ്തകം എനിക്ക് വേണം', r:'Ee pusthakam enikku venam' } },
+  { id:'v4', topic:'vidya', tip:'Lesson artham ayindi ani cheppadaniki.',
+    te:{ t:'నాకు బాగా అర్థమైంది', r:'Naaku baaga arthamaindi' },
+    ta:{ t:'எனக்கு நன்றாகப் புரிந்தது', r:'Enakku nandraga purindhathu' },
+    kn:{ t:'ನನಗೆ ಚೆನ್ನಾಗಿ ಅರ್ಥವಾಯಿತು', r:'Nanage chennagi arthavaayitu' },
+    ml:{ t:'എനിക്ക് നന്നായി മനസ്സിലായി', r:'Enikku nannaayi manassilaayi' } },
+  { id:'u1', topic:'udyogam', tip:'Office lo meeting start chesetappudu greeting.',
+    te:{ t:'శుభోదయం, నేను మీ సహాయం చేయగలనా?', r:'Shubhodayam, nenu mee sahayam cheyagalana?' },
+    ta:{ t:'காலை வணக்கம், நான் உதவலாமா?', r:'Kaalai vanakkam, naan udhavalaama?' },
+    kn:{ t:'ಶುಭೋದಯ, ನಾನು ಸಹಾಯ ಮಾಡಬಹುದೇ?', r:'Shubhodaya, naanu sahaaya maadabahude?' },
+    ml:{ t:'സുപ്രഭാതം, ഞാൻ സഹായിക്കട്ടെ?', r:'Suprabhatham, njaan sahaayikkatte?' } },
+  { id:'u2', topic:'udyogam', tip:'Work status update cheppadaniki.',
+    te:{ t:'పని పూర్తి అయింది', r:'Pani poorthi ayindi' },
+    ta:{ t:'வேலை முடிந்துவிட்டது', r:'Velai mudindhuvittathu' },
+    kn:{ t:'ಕೆಲಸ ಮುಗಿದಿದೆ', r:'Kelasa mugidide' },
+    ml:{ t:'ജോലി പൂർത്തിയായി', r:'Joli poorthiyaayi' } },
+  { id:'u3', topic:'udyogam', tip:'Leave adagadaniki manager tho matladetappudu.',
+    te:{ t:'రేపు నాకు సెలవు కావాలి', r:'Repu naaku selavu kavali' },
+    ta:{ t:'நாளை எனக்கு விடுமுறை வேண்டும்', r:'Naalai enakku vidumurai vendum' },
+    kn:{ t:'ನಾಳೆ ನನಗೆ ರಜೆ ಬೇಕು', r:'Naale nanage raje beku' },
+    ml:{ t:'നാളെ എനിക്ക് അവധി വേണം', r:'Naale enikku avadhi venam' } },
+  { id:'u4', topic:'udyogam', tip:'Meeting time confirm chesukodaniki.',
+    te:{ t:'మీటింగ్ ఎప్పుడు ఉంది?', r:'Meeting eppudu undi?' },
+    ta:{ t:'மீட்டிங் எப்போது உள்ளது?', r:'Meeting eppothu ullathu?' },
+    kn:{ t:'ಮೀಟಿಂಗ್ ಯಾವಾಗ ಇದೆ?', r:'Meeting yaavaaga ide?' },
+    ml:{ t:'മീറ്റിംഗ് എപ്പോഴാണ്?', r:'Meeting eppozhaanu?' } },
+  { id:'b1', topic:'vyaparam', tip:'Shop lo rate adagadaniki.',
+    te:{ t:'దీని ధర ఎంత?', r:'Deeni dhara entha?' },
+    ta:{ t:'இதன் விலை என்ன?', r:'Idhan vilai enna?' },
+    kn:{ t:'ಇದರ ಬೆಲೆ ಎಷ್ಟು?', r:'Idara bele eshtu?' },
+    ml:{ t:'ഇതിന്റെ വില എത്രയാണ്?', r:'Idhinte vila ethrayaanu?' } },
+  { id:'b2', topic:'vyaparam', tip:'Discount adagadaniki.',
+    te:{ t:'కొంచెం తగ్గించండి', r:'Konchem thagginchandi' },
+    ta:{ t:'கொஞ்சம் குறைத்துக்கொள்ளுங்கள்', r:'Konjam kuraithukkollungal' },
+    kn:{ t:'ಸ್ವಲ್ಪ ಕಡಿಮೆ ಮಾಡಿ', r:'Swalpa kadime maadi' },
+    ml:{ t:'കുറച്ച് കുറയ്ക്കൂ', r:'Kurachu kuraykkoo' } },
+  { id:'b3', topic:'vyaparam', tip:'Quality gurunchi cheppadaniki.',
+    te:{ t:'ఇది చాలా మంచి నాణ్యత', r:'Idi chala manchi nanyatha' },
+    ta:{ t:'இது மிகவும் நல்ல தரம்', r:'Idhu migavum nalla tharam' },
+    kn:{ t:'ಇದು ತುಂಬಾ ಒಳ್ಳೆಯ ಗುಣಮಟ್ಟ', r:'Idu thumba olleya gunamatta' },
+    ml:{ t:'ഇത് വളരെ നല്ല ഗുണമേന്മയുള്ളതാണ്', r:'Idhu valare nalla gunamenmayullathaanu' } },
+  { id:'b4', topic:'vyaparam', tip:'Bill adagadaniki.',
+    te:{ t:'దయచేసి బిల్లు ఇవ్వండి', r:'Dayachesi billu ivvandi' },
+    ta:{ t:'தயவுசெய்து பில் கொடுங்கள்', r:'Thayavuseythu bill kodungal' },
+    kn:{ t:'ದಯವಿಟ್ಟು ಬಿಲ್ ಕೊಡಿ', r:'Dayavittu bill kodi' },
+    ml:{ t:'ദയവായി ബിൽ തരൂ', r:'Dayavaayi bill tharoo' } },
+  { id:'p1', topic:'prayanam', tip:'Bus stand adagadaniki.',
+    te:{ t:'బస్ స్టాండ్ ఎక్కడ ఉంది?', r:'Bus stand ekkada undi?' },
+    ta:{ t:'பஸ் ஸ்டாண்ட் எங்கே உள்ளது?', r:'Bus stand enge ullathu?' },
+    kn:{ t:'ಬಸ್ ಸ್ಟ್ಯಾಂಡ್ ಎಲ್ಲಿದೆ?', r:'Bus stand ellide?' },
+    ml:{ t:'ബസ് സ്റ്റാൻഡ് എവിടെയാണ്?', r:'Bus stand evideyaanu?' } },
+  { id:'p2', topic:'prayanam', tip:'Ticket rate adagadaniki.',
+    te:{ t:'టికెట్ ఎంత అవుతుంది?', r:'Ticket entha avuthundi?' },
+    ta:{ t:'டிக்கெட் எவ்வளவு ஆகும்?', r:'Ticket evvalavu aagum?' },
+    kn:{ t:'ಟಿಕೆಟ್ ಎಷ್ಟು ಆಗುತ್ತೆ?', r:'Ticket eshtu aagutte?' },
+    ml:{ t:'ടിക്കറ്റ് എത്ര രൂപയാകും?', r:'Ticket ethra roopayaakum?' } },
+  { id:'p3', topic:'prayanam', tip:'Vehicle aagadaniki cheppadaniki.',
+    te:{ t:'ఇక్కడ ఆపండి', r:'Ikkada aapandi' },
+    ta:{ t:'இங்கே நிறுத்துங்கள்', r:'Inge niruthungal' },
+    kn:{ t:'ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ', r:'Illi nillisi' },
+    ml:{ t:'ഇവിടെ നിർത്തൂ', r:'Ivide nirthoo' } },
+  { id:'d1', topic:'daily', tip:'Evarinaina kalisinappudu greeting.',
+    te:{ t:'నమస్కారం, మీరు ఎలా ఉన్నారు?', r:'Namaskaram, meeru ela unnaru?' },
+    ta:{ t:'வணக்கம், நீங்கள் எப்படி இருக்கிறீர்கள்?', r:'Vanakkam, neengal eppadi irukkireergal?' },
+    kn:{ t:'ನಮಸ್ಕಾರ, ನೀವು ಹೇಗಿದ್ದೀರಾ?', r:'Namaskara, neevu hegiddira?' },
+    ml:{ t:'നമസ്കാരം, നിങ്ങൾക്ക് സുഖമാണോ?', r:'Namaskaram, ningalkku sukhamaano?' } },
+  { id:'d2', topic:'daily', tip:'Bagunnanu & thanks cheppadaniki.',
+    te:{ t:'నేను బాగున్నాను, ధన్యవాదాలు', r:'Nenu bagunnanu, dhanyavadalu' },
+    ta:{ t:'நான் நன்றாக இருக்கிறேன், நன்றி', r:'Naan nandraga irukkiren, nandri' },
+    kn:{ t:'ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ, ಧನ್ಯವಾದಗಳು', r:'Naanu chennagiddene, dhanyavadagalu' },
+    ml:{ t:'എനിക്ക് സുഖമാണ്, നന്ദി', r:'Enikku sukhamaanu, nanni' } },
+  { id:'d3', topic:'daily', tip:'Neellu adagadaniki.',
+    te:{ t:'మంచినీళ్లు ఇవ్వండి', r:'Manchineellu ivvandi' },
+    ta:{ t:'குடிக்கத் தண்ணீர் கொடுங்கள்', r:'Kudikka thanneer kodungal' },
+    kn:{ t:'ಕುಡಿಯಲು ನೀರು ಕೊಡಿ', r:'Kudiyalu neeru kodi' },
+    ml:{ t:'കുടിക്കാൻ വെള്ളം തരൂ', r:'Kudikkaan vellam tharoo' } }
+];
+
+const ROLEPLAYS = {
+  vidya: [
+    { bot:'d1', opts:['d2','v1'] }, { bot:'v3', opts:['v1','v2'] },
+    { bot:'v2', opts:['v4','v3'] }, { bot:'v4', opts:['v3','d2'] }, { bot:'d2', opts:['v4','d2'] }
+  ],
+  udyogam: [
+    { bot:'u1', opts:['d2','u4'] }, { bot:'u4', opts:['u2','u3'] },
+    { bot:'u2', opts:['u3','d2'] }, { bot:'u3', opts:['u2','d2'] }, { bot:'d2', opts:['u1','d2'] }
+  ],
+  vyaparam: [
+    { bot:'d1', opts:['b1','b3'] }, { bot:'b3', opts:['b1','b2'] },
+    { bot:'b1', opts:['b2','b4'] }, { bot:'b2', opts:['b4','d2'] }, { bot:'b4', opts:['d2','b3'] }
+  ],
+  prayanam: [
+    { bot:'d1', opts:['p1','p2'] }, { bot:'p1', opts:['p2','d2'] },
+    { bot:'p2', opts:['p3','d2'] }, { bot:'p3', opts:['d2','p2'] }, { bot:'d2', opts:['p3','d2'] }
+  ],
+  daily: [
+    { bot:'d1', opts:['d2','d3'] }, { bot:'d3', opts:['d2','b1'] },
+    { bot:'b1', opts:['b2','d2'] }, { bot:'p1', opts:['p3','d2'] }, { bot:'d2', opts:['d1','d2'] }
+  ]
+};
+
+const ALPHABETS = {
+  vowels: [
+    { s:'a', te:'అ', ta:'அ', kn:'ಅ', ml:'അ', trick:'Telugu "అ" & Kannada "ಅ" twins! Malayalam "അ" ante round ga thippina "3" ki tail pettinattu.' },
+    { s:'aa', te:'ఆ', ta:'ஆ', kn:'ಆ', ml:'ആ', trick:'"అ" ki extra curve/loop kalipithe "ఆ" (aa) avuthundi — 4 bhashallo ide rule!' },
+    { s:'i', te:'ఇ', ta:'இ', kn:'ಇ', ml:'ഇ', trick:'Malayalam "ഇ" chudataniki chinna caterpillar laaga melikalu tirigi untundi.' },
+    { s:'ee', te:'ఈ', ta:'ஈ', kn:'ಈ', ml:'ഈ', trick:'Tamil "ஈ" rendu dots unna face laaga, Malayalam "ഈ" extra loop tho untundi.' },
+    { s:'u', te:'ఉ', ta:'உ', kn:'ಉ', ml:'ഉ', trick:'Telugu "ఉ" & Kannada "ಉ" same! Tamil "உ" number 2 laaga untundi.' },
+    { s:'oo', te:'ఊ', ta:'ஊ', kn:'ಊ', ml:'ഊ', trick:'"ఉ" ki pakkana oka extra kommu/loop add chesthe "ఊ" (oo) avuthundi.' },
+    { s:'ru', te:'ఋ', ta:'—', kn:'ಋ', ml:'ഋ', trick:'Telugu "ఋ" & Kannada "ಋ" almost identical. Tamil lo ee separate letter ledu.' },
+    { s:'e', te:'ఎ', ta:'எ', kn:'ಎ', ml:'എ', trick:'Malayalam "എ" chudataniki inverted "M" laaga, Tamil "எ" box corner laaga untundi.' },
+    { s:'ae', te:'ఏ', ta:'ஏ', kn:'ಏ', ml:'ഏ', trick:'"ఎ" ki kindha oka chinna tail/line add chesthe "ఏ" (ae) avuthundi.' },
+    { s:'ai', te:'ఐ', ta:'ஐ', kn:'ಐ', ml:'ഐ', trick:'Malayalam "ഐ" ante "എ" mundu oka curly wave pettinattu untundi.' },
+    { s:'o', te:'ఒ', ta:'ஒ', kn:'ಒ', ml:'ഒ', trick:'Malayalam "ഒ" chudataniki round snail shell laaga untundi.' },
+    { s:'oa', te:'ఓ', ta:'ஓ', kn:'ಓ', ml:'ഓ', trick:'"ఒ" ki paina/kindha extra curve isthe "ఓ" (oa) avuthundi.' },
+    { s:'au', te:'ఔ', ta:'ஔ', kn:'ಔ', ml:'ഔ', trick:'"ఒ" pakkana "ళ" / curve add chesthe "ఔ" (au) avuthundi.' }
+  ],
+  cons: [
+    { s:'ka', te:'క', ta:'க', kn:'ಕ', ml:'ക', trick:'Telugu "క" & Kannada "ಕ" same! Malayalam "ക" heart/butterfly wings laaga untundi.' },
+    { s:'kha', te:'ఖ', ta:'க*', kn:'ಖ', ml:'ഖ', trick:'Tamil lo "க" ne context batti ka/kha/ga ga palukutharu.' },
+    { s:'ga', te:'గ', ta:'க*', kn:'ಗ', ml:'ഗ', trick:'Telugu "గ", Kannada "ಗ", Malayalam "ഗ" — moodu arch/gate shape lo untayi!' },
+    { s:'gha', te:'ఘ', ta:'க*', kn:'ಘ', ml:'ഘ', trick:'Telugu "ఘ" & Kannada "ಘ" kindha tick mark tho gurthupattachu.' },
+    { s:'cha', te:'చ', ta:'ச', kn:'ಚ', ml:'ച', trick:'Malayalam "ച" chinna cup laaga, Tamil "ச" square hook laaga untundi.' },
+    { s:'ja', te:'జ', ta:'ஜ', kn:'ಜ', ml:'ജ', trick:'Telugu "జ" & Kannada "ಜ" almost same shape!' },
+    { s:'ta', te:'ట', ta:'ட', kn:'ಟ', ml:'ട', trick:'Tamil "ட" exact ga English "L" laaga, Malayalam "ട" "S" shape lo untundi.' },
+    { s:'da', te:'డ', ta:'ட*', kn:'ಡ', ml:'ഡ', trick:'Telugu "డ" & Kannada "ಡ" twins! Malayalam "ഡ" "w" laaga untundi.' },
+    { s:'na (ṇ)', te:'ణ', ta:'ண', kn:'ಣ', ml:'ണ', trick:'Tamil "ண" & Malayalam "ണ" moodu arches (3 humps) laaga untayi.' },
+    { s:'tha', te:'త', ta:'த', kn:'ತ', ml:'ത', trick:'Malayalam "ത" chudataniki chinna spectacles/loops laaga untundi.' },
+    { s:'da (d)', te:'ద', ta:'த*', kn:'ದ', ml:'ദ', trick:'Telugu "ద" & Kannada "ದ" okela untayi. Malayalam "ദ" "3" shape lo untundi.' },
+    { s:'na', te:'న', ta:'ந', kn:'ನ', ml:'ന', trick:'Malayalam "ന" simple arch + tail; Telugu "న" & Kannada "ನ" same.' },
+    { s:'pa', te:'ప', ta:'ப', kn:'ಪ', ml:'പ', trick:'Tamil "ப" & Malayalam "പ" U-shaped box laaga untayi — chala easy!' },
+    { s:'ba', te:'బ', ta:'ப*', kn:'ಬ', ml:'ബ', trick:'Telugu "బ" & Kannada "ಬ" round twins! Malayalam "ബ" double-loop.' },
+    { s:'ma', te:'మ', ta:'ம', kn:'ಮ', ml:'മ', trick:'Malayalam "മ" ante English "D" ni padukobetti loop pettinattu.' },
+    { s:'ya', te:'య', ta:'ய', kn:'ಯ', ml:'യ', trick:'Tamil "ய" & Malayalam "യ" rendu U-cups pakka pakkana pettinattu!' },
+    { s:'ra', te:'ర', ta:'ர', kn:'ರ', ml:'ര', trick:'Telugu "ర" & Kannada "ರ" round circle; Malayalam "ര" open horseshoe laaga.' },
+    { s:'la', te:'ల', ta:'ல', kn:'ಲ', ml:'ല', trick:'Malayalam "ല" heart shape lo, Telugu "ల" & Kannada "ಲ" same.' },
+    { s:'va', te:'వ', ta:'வ', kn:'ವ', ml:'വ', trick:'Tamil "வ" & Malayalam "വ" "pa" ki oka loop add chesinattu untayi.' },
+    { s:'sa', te:'స', ta:'ஸ', kn:'ಸ', ml:'സ', trick:'Malayalam "സ" chudataniki wavy mountain laaga untundi.' },
+    { s:'ha', te:'హ', ta:'ஹ', kn:'ಹ', ml:'ഹ', trick:'Telugu "హ" & Kannada "ಹ" same! Malayalam "ഹ" "pa" + extra curve.' },
+    { s:'la (ḷ)', te:'ళ', ta:'ள', kn:'ಳ', ml:'ള', trick:'Malayalam "ള" & Telugu "ళ" rendu round loops tho easy ga gurthuntayi.' }
+  ]
+};
+
+let knownLang = 'te', targetLang = 'ml';
+let curTopic = 'vidya';
+let tutorMode = 'roleplay', tutorTopic = 'vidya', tutorIdx = 0;
+let rpStep = 0, rpHistory = [];
+let alphaMode = 'vowels';
+let quizMode = 'sentence', quizItem = null, quizLocked = false;
+let penColor = '#b45309', isDrawing = false, hasDrawn = false, traceDistance = 0, traceLetterKey = '';
+
+const todayStr = new Date().toDateString();
+const STORAGE_KEY = 'dakshin_life_v5'; // Keep v5 progress compatible with existing installs.
+function loadState(){
+  const fallback = {xp:0,dailyXp:0,streak:1,lastDate:'',done:[],rewards:[]};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const saved = raw ? JSON.parse(raw) : {};
+    const data = saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+    return {
+      ...fallback,
+      xp: Number.isFinite(Number(data.xp)) ? Math.max(0, Math.floor(Number(data.xp))) : 0,
+      dailyXp: Number.isFinite(Number(data.dailyXp)) ? Math.max(0, Math.floor(Number(data.dailyXp))) : 0,
+      streak: Number.isFinite(Number(data.streak)) ? Math.max(1, Math.floor(Number(data.streak))) : 1,
+      lastDate: typeof data.lastDate === 'string' ? data.lastDate : '',
+      done: Array.isArray(data.done) ? data.done.filter(x => typeof x === 'string') : [],
+      rewards: Array.isArray(data.rewards) ? data.rewards.filter(x => typeof x === 'string') : []
+    };
+  } catch(e) { return fallback; }
+}
+let state = loadState();
+
+function initStreak() {
+  if (state.lastDate !== todayStr) {
+    const yest = new Date(Date.now() - 86400000).toDateString();
+    state.streak = (state.lastDate === yest) ? state.streak + 1 : 1;
+    state.dailyXp = 0;
+    state.lastDate = todayStr;
+    saveState();
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) { /* app remains usable if storage is blocked */ }
+  document.getElementById('xpVal').textContent = state.xp;
+  document.getElementById('streakVal').textContent = state.streak;
+  document.getElementById('dailyXpTxt').textContent = state.dailyXp;
+  document.getElementById('dailyProgFill').style.width = Math.min(100, Math.round((state.dailyXp / 50) * 100)) + '%';
+  const targetDone = state.done.filter(k => k.startsWith(targetLang + '_')).length;
+  document.getElementById('coursePctTxt').textContent = `Course: ${Math.round((targetDone / DATA.length) * 100)}%`;
+}
+
+function addXP(pts, msg) {
+  state.xp = Math.max(0, Number(state.xp)||0) + pts;
+  state.dailyXp = Math.max(0, Number(state.dailyXp)||0) + pts;
+  saveState();
+  showToast(msg || `+${pts} XP! 🎉`);
+}
+function rewardOnce(key, pts, msg) {
+  const rewardKey = `${todayStr}|${key}`;
+  if (state.rewards.includes(rewardKey)) {
+    showToast('ఈరోజు ఈ practice XP ఇప్పటికే పొందారు');
+    return false;
+  }
+  state.rewards.push(rewardKey);
+  if (state.rewards.length > 500) state.rewards = state.rewards.slice(-500);
+  addXP(pts, msg);
+  return true;
+}
+
+function onLangChange(which) {
+  const k = document.getElementById('knownSel').value;
+  const t = document.getElementById('targetSel').value;
+  if (k === t) {
+    if (which === 'known') { targetLang = knownLang; document.getElementById('targetSel').value = targetLang; }
+    else { knownLang = targetLang; document.getElementById('knownSel').value = knownLang; }
+  }
+  knownLang = document.getElementById('knownSel').value;
+  targetLang = document.getElementById('targetSel').value;
+  refreshAll();
+}
+
+function swapLangs() {
+  [knownLang, targetLang] = [targetLang, knownLang];
+  document.getElementById('knownSel').value = knownLang;
+  document.getElementById('targetSel').value = targetLang;
+  refreshAll();
+}
+
+function switchTab(name, color, el) {
+  document.documentElement.style.setProperty('--theme', color);
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  if (name === 'script') setTimeout(resizeCanvas, 50);
+}
+
+function speak(text, rate = 1.0, langOverride = null) {
+  if (!('speechSynthesis' in window) || !text || text === '—') return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace('*', ''));
+  u.lang = LANGS[langOverride || targetLang].code;
+  u.rate = rate;
+  window.speechSynthesis.speak(u);
+}
+
+let activeSpeechRecognition = null;
+
+function checkSpeech(expectedText, btnEl, resId) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const resEl = document.getElementById(resId);
+  if (!resEl || !btnEl) return;
+
+  if (!SR) {
+    resEl.textContent = '⚠️ మీ బ్రౌజర్‌లో Speech Recognition అందుబాటులో లేదు. Androidలో తాజా Chrome ఉపయోగించండి.';
+    return;
+  }
+
+  if (activeSpeechRecognition) {
+    try { activeSpeechRecognition.abort(); } catch (e) {}
+    activeSpeechRecognition = null;
+  }
+
+  const rec = new SR();
+  activeSpeechRecognition = rec;
+  rec.lang = (LANGS[targetLang] || LANGS.te).code;
+  rec.interimResults = false;
+  rec.continuous = false;
+  rec.maxAlternatives = 3;
+
+  const originalLabel = '🎤 Speak & Check';
+  let finished = false;
+  const resetButton = () => {
+    btnEl.dataset.listening = 'false';
+    btnEl.classList.remove('listening');
+    btnEl.textContent = originalLabel;
+    if (activeSpeechRecognition === rec) activeSpeechRecognition = null;
+  };
+
+  btnEl.dataset.listening = 'true';
+  btnEl.classList.add('listening');
+  btnEl.textContent = '🎙️ వింటున్నాను...';
+  resEl.textContent = '🎙️ ఇప్పుడు మైక్‌లో స్పష్టంగా మాట్లాడండి...';
+
+  const normalize = value => String(value || '').toLocaleLowerCase().normalize('NFKC')
+    .replace(/[.,!?;:'"“”‘’\-–—।]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  rec.onresult = (e) => {
+    const alternatives = e.results?.[0] ? Array.from(e.results[0]) : [];
+    const spoken = alternatives.map(x => x.transcript || '').find(Boolean) || '';
+    const a = normalize(expectedText);
+    const b = normalize(spoken);
+    const matched = a && b && (
+      a === b || b.includes(a) || a.includes(b) ||
+      (Math.min(a.length, b.length) / Math.max(a.length, b.length) >= 0.78)
+    );
+
+    if (matched) {
+      resEl.textContent = `✅ బాగా చెప్పారు: "${spoken}"`;
+      const rewardId = resId.startsWith('m_') ? `speech_${resId}` : `speech_${targetLang}_${a}`;
+      rewardOnce(rewardId, 10, '🎤 Speaking practice! +10 XP');
+    } else {
+      resEl.textContent = spoken
+        ? `🔁 మీరు పలికింది: "${spoken}" — లక్ష్య వాక్యాన్ని మరోసారి నెమ్మదిగా పలకండి.`
+        : '🔁 మాట వినిపించలేదు. మళ్లీ ప్రయత్నించండి.';
+    }
+  };
+
+  rec.onerror = (e) => {
+    const messages = {
+      'not-allowed': 'మైక్ అనుమతి ఇవ్వండి. Chrome Site settingsలో Microphone → Allow చేయండి.',
+      'service-not-allowed': 'Speech సేవ అందుబాటులో లేదు. ఇంటర్నెట్ కనెక్షన్‌తో HTTPS వెబ్‌సైట్‌లో ప్రయత్నించండి.',
+      'no-speech': 'మీ మాట వినిపించలేదు. మైక్ దగ్గరగా ఉంచి మళ్లీ ప్రయత్నించండి.',
+      'audio-capture': 'మైక్రోఫోన్ పనిచేయడం లేదు. ఫోన్ మైక్/అనుమతులు పరిశీలించండి.',
+      'network': 'Speech సేవకు కనెక్షన్ కాలేదు. ఇంటర్నెట్ ఆన్ చేసి మళ్లీ ప్రయత్నించండి.',
+      'language-not-supported': 'ఈ భాషకు Speech Recognition మద్దతు లేదు. Chromeలో మళ్లీ ప్రయత్నించండి.'
+    };
+    resEl.textContent = '⚠️ ' + (messages[e.error] || `Speech సమస్య (${e.error || 'unknown'}). మళ్లీ ప్రయత్నించండి.`);
+    finished = true;
+    resetButton();
+  };
+
+  rec.onend = () => {
+    if (!finished && resEl.textContent.includes('ఇప్పుడు మైక్')) {
+      resEl.textContent = '🔁 వినడం ముగిసింది. మాట రికార్డ్ కాలేదు; మళ్లీ Speak & Check నొక్కండి.';
+    }
+    resetButton();
+  };
+
+  try {
+    rec.start();
+  } catch (e) {
+    finished = true;
+    resetButton();
+    resEl.textContent = '⚠️ మైక్ ప్రారంభం కాలేదు. మరోసారి నొక్కండి; మైక్ అనుమతి కూడా పరిశీలించండి.';
+  }
+}
+
+function renderTopics() {
+  document.getElementById('topicGrid').innerHTML = TOPICS.map(t => `
+    <div class="topic-card ${t.id===curTopic?'selected':''}" style="background:${t.bg}" role="button" tabindex="0" aria-pressed="${t.id===curTopic}" onclick="curTopic='${t.id}';renderTopics()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();curTopic='${t.id}';renderTopics()}">
+      <span class="t-icon">${t.icon}</span>
+      <div class="t-name">${t.name}</div>
+      <div class="t-sub">${t.sub}</div>
+    </div>`).join('');
+
+  const list = DATA.filter(x => x.topic === curTopic);
+  document.getElementById('lessonList').innerHTML = list.map(c => {
+    const k = c[knownLang], t = c[targetLang];
+    const doneKey = `${targetLang}_${c.id}`;
+    const isDone = state.done.includes(doneKey);
+    const safeT = t.t.replace(/'/g, "\\'");
+    return `
+      <div class="card ${isDone?'done':''}">
+        <div class="known-line">🗣️ ${k.t}</div>
+        <div class="target-line">${t.t}</div>
+        <div class="pron-line">${t.r}</div>
+        <div class="tip-box">💡 <strong>Learning Tip:</strong> ${c.tip}</div>
+        <div class="btn-row">
+          <button class="btn btn-pri" onclick="speak('${safeT}', 1)">🔊 Vinu</button>
+          <button class="btn btn-soft" onclick="speak('${safeT}', 0.65)">🐢 Slow</button>
+          <button class="btn btn-mic" onclick="checkSpeech('${safeT}', this, 'm_${c.id}')">🎤 Speak & Check</button>
+          <button class="btn btn-done ${isDone?'active':''}" onclick="toggleDone('${doneKey}')">${isDone?'✓ Done':'+10XP'}</button>
+        </div>
+        <div class="mic-res" id="m_${c.id}"></div>
+      </div>`;
+  }).join('');
+}
+
+function toggleDone(key) {
+  if (state.done.includes(key)) return;
+  state.done.push(key);
+  rewardOnce(`lesson_${key}`, 10, '📘 Lesson completed! +10 XP');
+  renderTopics();
+}
+
+function setTutorMode(m) {
+  tutorMode = m;
+  document.getElementById('btnModeRp').classList.toggle('active', m === 'roleplay');
+  document.getElementById('btnModeGuide').classList.toggle('active', m === 'guided');
+  if (m === 'roleplay') resetRoleplay();
+  renderTutor();
+}
+
+function resetRoleplay() { rpStep = 0; rpHistory = []; }
+function getById(id) { return DATA.find(x => x.id === id) || DATA[0]; }
+
+function renderTutor() {
+  document.getElementById('tutorChips').innerHTML = TOPICS.map(t => `
+    <button class="chip ${t.id===tutorTopic?'active':''}" onclick="tutorTopic='${t.id}';tutorIdx=0;resetRoleplay();renderTutor()">${t.icon} ${t.name}</button>
+  `).join('');
+
+  if (tutorMode === 'guided') {
+    const list = DATA.filter(x => x.topic === tutorTopic);
+    const item = list[tutorIdx % list.length];
+    const k = item[knownLang], t = item[targetLang];
+    const safeT = t.t.replace(/'/g, "\\'");
+    document.getElementById('tutorCard').innerHTML = `
+      <div class="ai-badge">📖 GUIDED LESSON • Step ${(tutorIdx % list.length) + 1} / ${list.length}</div>
+      <div class="ai-explain"><strong>Explanation:</strong> ${item.tip}<br><strong>${LANGS[knownLang].name}:</strong> "${k.t}"</div>
+      <div class="ai-big">${t.t}</div>
+      <div class="ai-pron">${t.r}</div>
+      <div class="ai-actions">
+        <button class="btn btn-pri" style="background:#059669;justify-content:center;padding:11px;" onclick="speak('${safeT}', 0.95)">🔊 Listen</button>
+        <button class="btn btn-mic" style="justify-content:center;padding:11px;" onclick="checkSpeech('${safeT}', this, 'tutorMicRes')">🎤 Speak & Check</button>
+      </div>
+      <div class="mic-res" id="tutorMicRes" style="margin-bottom:10px;"></div>
+      <button class="btn btn-soft" style="width:100%;justify-content:center;padding:11px;" onclick="tutorIdx++;renderTutor()">Next Step ➡️</button>`;
+    return;
+  }
+
+  const flow = ROLEPLAYS[tutorTopic];
+  const dots = flow.map((_, i) => `<div class="rp-dot ${i < rpStep ? 'done' : (i === rpStep ? 'now' : '')}"></div>`).join('');
+
+  if (rpStep < flow.length && rpHistory.length === rpStep * 2) {
+    rpHistory.push({ who:'bot', item: getById(flow[rpStep].bot) });
+  }
+
+  const chatHtml = rpHistory.map(h => {
+    const t = h.item[targetLang], k = h.item[knownLang];
+    const safeT = t.t.replace(/'/g, "\\'");
+    return `
+      <div class="msg ${h.who}" onclick="speak('${safeT}', 0.95)">
+        <strong>${t.t}</strong> 🔊
+        <span class="msg-sub">${t.r}</span>
+        <span class="msg-sub">(${k.t})</span>
+      </div>`;
+  }).join('');
+
+  let actionHtml = '';
+  if (rpStep >= flow.length) {
+    actionHtml = `
+      <div class="ai-explain" style="text-align:center;font-weight:800;color:#065f46;">🎉 5-Step Roleplay Complete! (+25 XP)</div>
+      <button class="btn btn-pri" style="background:#059669;width:100%;justify-content:center;padding:11px;" onclick="resetRoleplay();renderTutor()">🔄 Malli Practice Cheyi</button>`;
+  } else {
+    const opts = flow[rpStep].opts.map(id => {
+      const o = getById(id);
+      return `
+        <button class="rp-opt-btn" onclick="pickRoleplay('${id}')">
+          ${o[targetLang].t}
+          <small>${o[targetLang].r} — ${o[knownLang].t}</small>
+        </button>`;
+    }).join('');
+    actionHtml = `<div style="font-size:0.76rem;color:var(--muted);font-weight:700;margin-bottom:6px;">Mee reply select cheyandi (Step ${rpStep+1}/5):</div><div class="rp-opts">${opts}</div>`;
+  }
+
+  document.getElementById('tutorCard').innerHTML = `
+    <div class="ai-badge">🎭 5-STEP PRACTICE • ${tutorTopic.toUpperCase()}</div>
+    <div class="rp-step-bar">${dots}</div>
+    <div class="chat-box" id="rpBox">${chatHtml}</div>
+    ${actionHtml}`;
+
+  const box = document.getElementById('rpBox');
+  if (box) box.scrollTop = box.scrollHeight;
+}
+
+function pickRoleplay(id) {
+  const o = getById(id);
+  rpHistory.push({ who:'user', item: o });
+  speak(o[targetLang].t, 1);
+  rpStep++;
+  if (rpStep >= ROLEPLAYS[tutorTopic].length) rewardOnce(`roleplay_${tutorTopic}`, 25, '🎭 Roleplay complete! +25 XP');
+  renderTutor();
+}
+
+// TRACING PAD LOGIC
+const canvas = document.getElementById('traceCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) return;
+  const old = document.createElement('canvas');
+  old.width = canvas.width; old.height = canvas.height;
+  if (old.width && old.height) old.getContext('2d').drawImage(canvas,0,0);
+  const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  if (old.width && old.height) ctx.drawImage(old,0,0,old.width,old.height,0,0,rect.width,rect.height);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.lineWidth = 7; ctx.strokeStyle = penColor;
+}
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+function startDraw(e) {
+  if (e.button !== undefined && e.button !== 0) return;
+  e.preventDefault();
+  isDrawing = true;
+  if (canvas.setPointerCapture && e.pointerId !== undefined) {
+    try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+  }
+  const p = getPos(e);
+  window.lastTracePoint = p;
+  ctx.beginPath();
+  ctx.moveTo(p.x, p.y);
+}
+
+function moveDraw(e) {
+  if (!isDrawing) return;
+  e.preventDefault();
+  const p = getPos(e);
+  ctx.strokeStyle = penColor;
+  ctx.lineWidth = 7;
+  const prev = window.lastTracePoint || p;
+  traceDistance += Math.hypot(p.x-prev.x, p.y-prev.y);
+  window.lastTracePoint = p;
+  if (traceDistance > 12) hasDrawn = true;
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+}
+
+function endDraw() { isDrawing = false; window.lastTracePoint = null; }
+
+canvas.addEventListener('pointerdown', startDraw);
+canvas.addEventListener('pointermove', moveDraw);
+canvas.addEventListener('pointerup', endDraw);
+canvas.addEventListener('pointercancel', endDraw);
+canvas.addEventListener('lostpointercapture', endDraw);
+
+function clearPad() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasDrawn = false;
+  traceDistance = 0;
+}
+
+function setPenColor(c, el) {
+  penColor = c;
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function finishTrace() {
+  if (!hasDrawn || traceDistance < 12) { showToast('✍️ Mundu aksharam practice cheyandi!'); return; }
+  rewardOnce(`trace_${targetLang}_${traceLetterKey || 'practice'}`, 5, '✍️ Writing practice! +5 XP');
+  clearPad();
+}
+
+function setAlpha(mode, el) {
+  alphaMode = mode;
+  document.querySelectorAll('#alphaChips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('padBox').style.display = (mode === 'compare') ? 'none' : 'block';
+  renderScript();
+}
+
+function selectLetter(type, idx, cardEl) {
+  const a = ALPHABETS[type][idx];
+  document.querySelectorAll('.alpha-card').forEach(c => c.classList.remove('picked'));
+  if (cardEl) cardEl.classList.add('picked');
+  speak(a[targetLang], 0.8);
+
+  const cleanLetter = a[targetLang].replace('*', '');
+  document.getElementById('ghostLetter').textContent = (cleanLetter === '—') ? '' : cleanLetter;
+  document.getElementById('padLetterLabel').textContent = `Trace: ${cleanLetter} (${a.s})`;
+  traceLetterKey = `${type}_${idx}`;
+  clearPad();
+
+  document.getElementById('trickPanel').innerHTML = `
+    <div class="tp-top">
+      <div class="tp-big">${a[targetLang]}</div>
+      <div class="tp-info">
+        ${LANGS[knownLang].name}: <span style="font-size:1.2rem;color:#059669;">${a[knownLang]}</span> &nbsp;|&nbsp; Sound: <strong>"${a.s}"</strong> 🔊
+      </div>
+    </div>
+    <div class="tp-trick">💡 <strong>Visual Trick:</strong> ${a.trick}</div>`;
+}
+
+function renderScript() {
+  const cont = document.getElementById('scriptContainer');
+  if (alphaMode === 'compare') {
+    const all = [...ALPHABETS.vowels, ...ALPHABETS.cons];
+    cont.innerHTML = `
+      <table class="cmp-table">
+        <tr><th>Sound</th><th>తెలుగు</th><th>தமிழ்</th><th>ಕನ್ನಡ</th><th>മലയാളം</th></tr>
+        ${all.map(a => `
+          <tr>
+            <td class="snd">${a.s}</td>
+            <td onclick="speak('${a.te}',0.8,'te')">${a.te}</td>
+            <td onclick="speak('${a.ta}',0.8,'ta')">${a.ta}</td>
+            <td onclick="speak('${a.kn}',0.8,'kn')">${a.kn}</td>
+            <td onclick="speak('${a.ml}',0.8,'ml')">${a.ml}</td>
+          </tr>`).join('')}
+      </table>`;
+    return;
+  }
+
+  const list = ALPHABETS[alphaMode];
+  document.getElementById('ghostLetter').textContent = list[0][targetLang].replace('*','');
+  cont.innerHTML = `<div class="script-grid">` + list.map((a, i) => `
+    <div class="alpha-card" role="button" tabindex="0" onclick="selectLetter('${alphaMode}', ${i}, this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectLetter('${alphaMode}', ${i}, this)}">
+      <div class="a-target">${a[targetLang]}</div>
+      <div class="a-known">${a[knownLang]}</div>
+      <div class="a-sound">${a.s} 🔊</div>
+    </div>`).join('') + `</div>`;
+}
+
+
+function shuffled(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function setQuizMode(m) {
+  quizMode = m;
+  document.getElementById('btnQSent').classList.toggle('active', m === 'sentence');
+  document.getElementById('btnQAlpha').classList.toggle('active', m === 'alpha');
+  nextQuiz();
+}
+
+function nextQuiz() {
+  quizLocked = false;
+  const qTarget = document.getElementById('quizTarget');
+  const qPron = document.getElementById('quizPron');
+  const qOpts = document.getElementById('quizOpts');
+  const qTrick = document.getElementById('quizTrick');
+  document.getElementById('quizMsg').textContent = '';
+  qTrick.style.display = 'none';
+
+  if (quizMode === 'alpha') {
+    document.getElementById('quizBadge').textContent = '🔤 ALPHABET QUIZ (+10 XP)';
+    qTarget.classList.add('alpha-big');
+    qOpts.classList.add('alpha-grid');
+
+    const pool = [...ALPHABETS.vowels, ...ALPHABETS.cons].filter(
+      a => a[targetLang] !== '—' && !a[targetLang].includes('*') && a[knownLang] !== '—'
+    );
+    quizItem = pool[Math.floor(Math.random() * pool.length)];
+    qTarget.textContent = quizItem[targetLang];
+    qPron.textContent = 'Ee aksharam edhi? (Audio vini leda chusi cheppandi)';
+
+    const choices = shuffled(pool).slice(0, Math.min(4, pool.length));
+    if (!quizItem || choices.length === 0) {
+      qTarget.textContent = 'ఈ భాషకు అక్షరాలు అందుబాటులో లేవు';
+      qOpts.innerHTML = '';
+      return;
+    }
+    if (!choices.includes(quizItem)) choices[0] = quizItem;
+    const finalChoices = shuffled(choices);
+
+    qOpts.innerHTML = finalChoices.map(c =>
+      `<button class="opt-btn" onclick="checkAlphaQuiz(this, '${c.s}')">${c[knownLang]} <small style="font-size:0.78rem;color:#64748b">(${c.s})</small></button>`
+    ).join('');
+    return;
+  }
+
+  document.getElementById('quizBadge').textContent = '💬 SENTENCE QUIZ (+15 XP)';
+  qTarget.classList.remove('alpha-big');
+  qOpts.classList.remove('alpha-grid');
+
+  quizItem = DATA[Math.floor(Math.random() * DATA.length)];
+  qTarget.textContent = quizItem[targetLang].t;
+  qPron.textContent = quizItem[targetLang].r;
+
+  const choices = shuffled(DATA).slice(0, Math.min(4, DATA.length));
+  if (!choices.includes(quizItem)) choices[0] = quizItem;
+  const finalChoices = shuffled(choices);
+  qOpts.innerHTML = finalChoices.map(c =>
+    `<button class="opt-btn" onclick="checkQuiz(this, '${c.id}')">${c[knownLang].t}</button>`
+  ).join('');
+}
+
+function speakQuiz() {
+  if (!quizItem) return;
+  if (quizMode === 'alpha') speak(quizItem[targetLang], 0.8);
+  else speak(quizItem[targetLang].t, 0.9);
+}
+
+function checkQuiz(btn, id) {
+  if (quizLocked) return;
+  quizLocked = true;
+  if (id === quizItem.id) {
+    btn.classList.add('correct');
+    document.getElementById('quizMsg').textContent = '✅ Super! Correct Answer!';
+    rewardOnce(`quiz_sentence_${quizItem.id}`, 15, '🎯 Sentence quiz! +15 XP');
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('quizMsg').textContent = '❌ Correct: ' + quizItem[knownLang].t;
+  }
+}
+
+function checkAlphaQuiz(btn, sound) {
+  if (quizLocked) return;
+  quizLocked = true;
+  if (sound === quizItem.s) {
+    btn.classList.add('correct');
+    document.getElementById('quizMsg').textContent = `✅ Super! "${quizItem[targetLang]}" ante "${quizItem[knownLang]} (${quizItem.s})"`;
+    rewardOnce(`quiz_alpha_${quizItem.s}`, 10, '🔤 Alphabet quiz! +10 XP');
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('quizMsg').textContent = `❌ Correct: ${quizItem[knownLang]} (${quizItem.s})`;
+  }
+  const qTrick = document.getElementById('quizTrick');
+  qTrick.innerHTML = `💡 <strong>Memory Trick:</strong> ${quizItem.trick}`;
+  qTrick.style.display = 'block';
+}
+
+function refreshAll() {
+  saveState();
+  renderTopics();
+  resetRoleplay();
+  renderTutor();
+  renderScript();
+  nextQuiz();
+}
+
+initStreak();
+refreshAll();
+window.addEventListener('resize', resizeCanvas);
+</script>
+</body>
+</html>
